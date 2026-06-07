@@ -1,7 +1,7 @@
 import express from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import prisma from '../prisma.js'
+import prisma from '../prismaClient.js'
 
 const router = express.Router()
 
@@ -47,7 +47,6 @@ router.post('/login', async (req, res) => {
 
         const passwordIsValid = bcrypt.compareSync(password, user.password)
         if (!passwordIsValid) { return res.status(401).send({ message: "Invalid password" }) }
-        console.log(user)
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' })
         res.json({ token })
