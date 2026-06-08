@@ -3,21 +3,21 @@ services:
     build: .
     container_name: todo-app
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/todo_db # 💡 هنا db تطابق اسم الخدمة بالأسفل
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/todo_db 
       - JWT_SECRET=secret_A7a_000
       - NODE_ENV=development
       - PORT=3000
     ports:
       - "3000:3000"
     depends_on:
-      db: # 💡 تم التعديل هنا ليعتمد على db
-        condition: service_healthy # 💡 يضمن عدم التشغيل إلا بعد جاهزية الـ DB تماماً
+      db: 
+        condition: service_healthy 
     volumes:
       - .:/app
       - /app/src/generated
       - /app/node_modules
 
-  db: # 💡 تم تغيير الاسم من database إلى db لإصلاح الربط
+  db: 
     image: postgres:15-alpine
     container_name: todo-postgres-database
     environment:
@@ -28,7 +28,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # 💡 إضافة فحص الجاهزية للتأكد من عمل السيرفر داخلياً قبل انطلاق التطبيق
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d todo_db"]
       interval: 5s
